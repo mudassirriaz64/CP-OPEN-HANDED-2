@@ -2,13 +2,14 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 struct books
 {
     string title;
     int year;
+    string author;
     string genre;
 };
 
@@ -43,6 +44,8 @@ void take_input_of_books()
         cout << "Enter The Publication Year : ";
         cin >> ::data[i].year;
         cin.ignore();
+        cout << "Enter Book Author Name : ";
+        getline(cin, ::data[i].author);
         cout << "Enter The Genre Of The Book (Fiction Or Non Fiction) : ";
         getline(cin, ::data[i].genre);
     }
@@ -68,6 +71,7 @@ void writeDataToFile(const string& fileName, const string& genre)
             {
                 outFile << ::data[i].title << "\n";
                 outFile << ::data[i].year << "\n";
+                outFile << ::data[i].author << "\n";  // Include author in the file
                 outFile << ::data[i].genre << "\n";
             }
         }
@@ -88,6 +92,7 @@ void writeDataToFile(const string& fileName, const string& genre)
         exit(0);
     }
 }
+
 bool compareBooks(const books& a, const books& b)
 {
     return a.year < b.year;
@@ -103,11 +108,12 @@ void readDataFromFile(const string& fileName)
 
         string title;
         int year;
+        string author;
         string genre;
 
-        while (getline(inFile, title) && inFile >> year >> ws && getline(inFile, genre))
+        while (getline(inFile, title) && inFile >> year >> ws && getline(inFile, author) && getline(inFile, genre))
         {
-            booksList.push_back({ title, year, genre });
+            booksList.push_back({ title, year, author, genre });
         }
 
         inFile.close();
@@ -119,7 +125,7 @@ void readDataFromFile(const string& fileName)
         cout << "\nData from " << fileName << " (sorted by publication year):\n" << endl;
         for (const auto& book : booksList)
         {
-            cout << "Title: " << book.title << "\tYear: " << book.year << "\tGenre: " << book.genre << endl;
+            cout << "Title: " << book.title << "\tYear: " << book.year << "\tAuthor: " << book.author << "\tGenre: " << book.genre << endl;
         }
     }
     else
@@ -135,7 +141,6 @@ void readDataFromFile(const string& fileName)
         exit(0);
     }
 }
-
 
 void main_menu()
 {
